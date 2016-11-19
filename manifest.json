@@ -6,15 +6,15 @@
   "version": "0.1",
 
   "web_accessible_resources": ["css/rumorensd.css"],
-  "content_scripts": [
-    {
-      "matches": ["https://twitter.com/*"],
-      "css" : ["css/rumorend.css"]
-    }
-  ],
+
+  "content_scripts": [{
+    "matches": ["https://twitter.com/", "https://twitter.com/*"],
+    "css": ["css/rumorend.css"],
+    "js": ["js/rumorend.js"],
+    "run_at" : "document_start"
+ }],
   "background": {
-    "scripts": ["js/rumorend.js"],
-    "css" : ["css/rumorend.css"],
+    "scripts": ["js/rumorend-bg.js"],
     "persistent": false
   },
 

@@ -7,7 +7,7 @@
     }
 }
 
-li {
+li.js-stream-item.stream-item.stream-item {
     animation-duration: 0.01s;
     animation-name: nodeInserted;
 }
