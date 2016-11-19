@@ -4,8 +4,17 @@
   "name": "Rumorend",
   "description": "This extension protect you from rumor!",
   "version": "0.1",
+
+  "web_accessible_resources": ["css/rumorensd.css"],
+  "content_scripts": [
+    {
+      "matches": ["https://twitter.com/*"],
+      "css" : ["css/rumorend.css"]
+    }
+  ],
   "background": {
     "scripts": ["js/rumorend.js"],
+    "css" : ["css/rumorend.css"],
     "persistent": false
   },
 
@@ -13,6 +22,7 @@
     "default_icon": "images/icon.png",
     "default_title": "Extension will be enabled when you open twitter.com"
   },
+
   "permissions": [
     "https://twitter.com/",
     "activeTab",
@@ -20,5 +30,4 @@
     "storage",
     "declarativeContent"
   ]
-
 }
