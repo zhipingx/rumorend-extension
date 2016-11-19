@@ -7,7 +7,12 @@
     }
 }
 
-li.js-stream-item.stream-item.stream-item {
+/*li.js-stream-item.stream-item.stream-item {
+    animation-duration: 0.01s;
+    animation-name: nodeInserted;
+}*/
+
+div.tweet.js-stream-tweet.js-actionable-tweet.js-profile-popup-actionable.original-tweet.js-original-tweet {
     animation-duration: 0.01s;
     animation-name: nodeInserted;
 }
