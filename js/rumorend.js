@@ -7,35 +7,35 @@ chrome.storage.local.get({'shieldsUp': true}, function(items) {
 });
 
 function setUpShield() {
-  // console.log('Nahg!!!')
-  // document.addEventListener('DOMNodeInserted', function(event) {
   document.addEventListener('animationstart', function(event){
     if (event.animationName == 'nodeInserted') {
-      // Do something when a new li is loaded to twitter page
-      // element.firstChild
       tweetDiv = event.target;
-      tweetId = tweetDiv.getAttribute('data-item-id');
+      console.log(tweetDiv);
+      insertFactCheckIcon(tweetDiv);
 
+      tweetId = tweetDiv.getAttribute('data-item-id');
       tweetLiId = 'stream-item-tweet-' + tweetId;
       tweetLi = document.getElementById(tweetLiId);
-
-      // ("div").find("[data-item-id='" + tweetId + "']")
-      $(tweetDiv).addClass('scanning');
-
-      // setTimeout(function () {
-      //   $(arguments[0]).removeClass('scanning');
-      //   console.log(arguments[1] + 'removed')
-      // }, 5 * 1000, tweetDiv, tweetId);
-      
-      // tweetDiv.
-      // tweetDiv.className += " scanning";
-
       tweetDivId = tweetDiv.getAttribute('data-permalink-path');
       twittURL = twitterURLPrefix + tweetDivId;
-
-      // console.log(twittURL);
     }
   }, false);
+}
+
+function insertFactCheckIcon(tweetDiv) {
+  if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) return;
+  $(tweetDiv).find('.stream-item-header').append('<div class="fact-check twitter-bird"></div>');
+  imgSrc = chrome.runtime.getURL('images/tw-small.png');
+  $(".fact-check").css('background-image', 'url(' + imgSrc + ')')
+}
+
+function updateFactCheckIcon(tweetDiv) {
+  if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) {
+    $(tweetDiv).find('.twitter-bird').remove();
+    $(tweetDiv).find('.stream-item-header').append('<div class="fact-check"></div>');
+    imgSrc = chrome.runtime.getURL('images/fact-check.png');
+    $(".fact-check").css('background-image', 'url(' + imgSrc + ')')
+  }
 }
 
 function postAJAX(twittURL, tweetDiv) {
