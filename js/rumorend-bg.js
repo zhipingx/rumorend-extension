@@ -2,7 +2,6 @@ var c = chrome || browser;
 var regex = /https:\/\/twitter\.com\/(.*)/;
 
 
-
 c.pageAction.onClicked.addListener(function(tab) {
   c.storage.local.get({'shieldsUp': true}, function(items) {
     if (items.shieldsUp) {
