@@ -61,12 +61,14 @@ function postAJAX(tweetURL, tweetDiv) {
   var json_query = { 'url': tweetURL };
   // var xmldoc = httpRequest.responseXML;
   httpRequest = new XMLHttpRequest()
+  httpRequest.tweetDiv = tweetDiv
 
   function alertContents() {
-    if (httpRequest.readyState === XMLHttpRequest.DONE) {
-      if (httpRequest.status === 200) {
-        // var response = JSON.parse(httpRequest.responseText);
-        console.log(httpRequest.responseText)
+    if (this.readyState === XMLHttpRequest.DONE) {
+      if (this.status === 200) {
+        // var response = JSON.parse(this.responseText);
+        console.log(tweetURL + ' ' + this.responseText)
+        updateFactCheckIcon(this.tweetDiv)
         // alert(response.computedString);
       } else {
         alert('There was a problem with the request.');
