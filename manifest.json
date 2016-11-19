@@ -13,17 +13,17 @@
     "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
     "run_at" : "document_start"
  }],
+
   "background": {
     "scripts": ["js/rumorend-bg.js"],
     "persistent": false
   },
-
   "page_action": {
     "default_icon": "images/icon.png",
     "default_title": "Extension will be enabled when you open twitter.com"
   },
-
   "permissions": [
+    "https://ec2-54-147-50-239.compute-1.amazonaws.com:5000/",
     "https://twitter.com/",
     "activeTab",
     "tabs",

@@ -1,4 +1,7 @@
 var twitterURLPrefix = 'https://twitter.com'
+var rumorendServerURL = 'https://ec2-54-147-50-239.compute-1.amazonaws.com:5000/rumor_detect_fake'
+
+
 
 chrome.storage.local.get({'shieldsUp': true}, function(items) {
   if(items.shieldsUp) {
@@ -10,17 +13,33 @@ function setUpShield() {
   document.addEventListener('animationstart', function(event){
     if (event.animationName == 'nodeInserted') {
       tweetDiv = event.target;
-      console.log(tweetDiv);
       insertFactCheckIcon(tweetDiv);
 
       tweetId = tweetDiv.getAttribute('data-item-id');
       tweetLiId = 'stream-item-tweet-' + tweetId;
       tweetLi = document.getElementById(tweetLiId);
+
+      // ("div").find("[data-item-id='" + tweetId + "']")
+
+      // $(tweetDiv).addClass('scanning');
+
+      // setTimeout(function () {
+      //   $(arguments[0]).removeClass('scanning');
+      //   console.log(arguments[1] + 'removed')
+      // }, 5 * 1000, tweetDiv, tweetId);
+
+      // tweetDiv.
+      // tweetDiv.className += " scanning";
+
       tweetDivId = tweetDiv.getAttribute('data-permalink-path');
-      twittURL = twitterURLPrefix + tweetDivId;
+      tweetURL = twitterURLPrefix + tweetDivId;
+      // console.log(tweetURL);
+      postAJAX(tweetURL, tweetDiv);
+
     }
   }, false);
 }
+
 
 function insertFactCheckIcon(tweetDiv) {
   if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) return;
@@ -38,22 +57,36 @@ function updateFactCheckIcon(tweetDiv) {
   }
 }
 
-function postAJAX(twittURL, tweetDiv) {
-  var json_query = {"url": twittURL};
-  http_request.onreadystatechange = function() {
-    if (http_request.readyState == 4) {
-      // Javascript function JSON.parse to parse JSON data
-      var jsonObj = JSON.parse(http_request.responseText);
-      confidence = jsonObj.confidence;
+function postAJAX(tweetURL, tweetDiv) {
+  var json_query = { 'url': tweetURL };
+  // var xmldoc = httpRequest.responseXML;
+  httpRequest = new XMLHttpRequest()
 
-      // tweetDiv.
-      // jsonObj variable now contains the data structure and can
-      // be accessed as jsonObj.name and jsonObj.country.
-      // document.getElementById(tweetDivId).innerHTML = jsonObj.name;
+  function alertContents() {
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+        // var response = JSON.parse(httpRequest.responseText);
+        console.log(httpRequest.responseText)
+        // alert(response.computedString);
+      } else {
+        alert('There was a problem with the request.');
+      }
     }
   }
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("POST", "http://ec2-54-147-50-239.compute-1.amazonaws.com:5000/rumor_detect_fake");
-  xmlhttp.setRequestHeader("Content-Type", "application/json");
-  xmlhttp.send(JSON.stringify(json_query));
+
+  httpRequest.onreadystatechange = alertContents;
+  httpRequest.open('POST', rumorendServerURL);
+  httpRequest.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  httpRequest.send(JSON.stringify(json_query));
+
+
+  // $.ajax({
+  //   type: "POST",
+  //   url: rumorendServerURL,
+  //   data: JSON.stringify(json_query),
+  //   contentType: "application/json; charset=utf-8",
+  //   dataType: "text",
+  //   success: function(response_data) { console.log(tweetURL + " " + response_data); },
+  //   failure: function(errMsg) { console.log(tweetURL + " " + errMsg); }
+  // });
 }
