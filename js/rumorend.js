@@ -1,6 +1,10 @@
-var twitterURLPrefix = 'https://twitter.com'
-var rumorendServerURL = 'https://ec2-54-147-50-239.compute-1.amazonaws.com:5000/rumor_detect_fake'
-
+var TwitterURLPrefix = 'https://twitter.com'
+var RumorendServerURL = 'https://ec2-54-147-50-239.compute-1.amazonaws.com:5000/rumor_detect_fake'
+var ConfidenceResultsList = [chrome.runtime.getURL('images/16_verypoor.png'),
+                        chrome.runtime.getURL('images/16_poor.png'),
+                        chrome.runtime.getURL('images/16_unsatisfactory.png'),
+                        chrome.runtime.getURL('images/16_good.png'),
+                        chrome.runtime.getURL('images/16_excellent.png')];
 
 
 chrome.storage.local.get({'shieldsUp': true}, function(items) {
@@ -32,7 +36,7 @@ function setUpShield() {
       // tweetDiv.className += " scanning";
 
       tweetDivId = tweetDiv.getAttribute('data-permalink-path');
-      tweetURL = twitterURLPrefix + tweetDivId;
+      tweetURL = TwitterURLPrefix + tweetDivId;
       // console.log(tweetURL);
       postAJAX(tweetURL, tweetDiv);
 
@@ -45,15 +49,15 @@ function insertFactCheckIcon(tweetDiv) {
   if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) return;
   $(tweetDiv).find('.stream-item-header').append('<div class="fact-check twitter-bird"></div>');
   imgSrc = chrome.runtime.getURL('images/tw-small.png');
-  $(".fact-check").css('background-image', 'url(' + imgSrc + ')')
+  $(tweetDiv).find(".fact-check").css('background-image', 'url(' + imgSrc + ')')
 }
 
-function updateFactCheckIcon(tweetDiv) {
+function updateFactCheckIcon(tweetDiv, confidence) {
   if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) {
     $(tweetDiv).find('.twitter-bird').remove();
     $(tweetDiv).find('.stream-item-header').append('<div class="fact-check"></div>');
-    imgSrc = chrome.runtime.getURL('images/fact-check.png');
-    $(".fact-check").css('background-image', 'url(' + imgSrc + ')')
+    console.log(confidence);
+    $(tweetDiv).find(".fact-check").css('background-image', 'url(' + ConfidenceResultsList[(confidence / 20) | 0] + ')');
   }
 }
 
@@ -67,24 +71,25 @@ function postAJAX(tweetURL, tweetDiv) {
     if (this.readyState === XMLHttpRequest.DONE) {
       if (this.status === 200) {
         // var response = JSON.parse(this.responseText);
-        console.log(tweetURL + ' ' + this.responseText)
-        updateFactCheckIcon(this.tweetDiv)
+        // console.log(tweetURL + ' ' + this.responseText);
+        updateFactCheckIcon(this.tweetDiv, this.responseText);
         // alert(response.computedString);
       } else {
-        alert('There was a problem with the request.');
+        console.log(this.responseText);
+        // alert('There was a problem with the request.');
       }
     }
   }
 
   httpRequest.onreadystatechange = alertContents;
-  httpRequest.open('POST', rumorendServerURL);
+  httpRequest.open('POST', RumorendServerURL);
   httpRequest.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
   httpRequest.send(JSON.stringify(json_query));
 
 
   // $.ajax({
   //   type: "POST",
-  //   url: rumorendServerURL,
+  //   url: RumorendServerURL,
   //   data: JSON.stringify(json_query),
   //   contentType: "application/json; charset=utf-8",
   //   dataType: "text",

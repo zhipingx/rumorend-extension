@@ -7,12 +7,19 @@
 
   "web_accessible_resources": ["css/rumorensd.css", "images/*.png"],
 
-  "content_scripts": [{
-    "matches": ["https://twitter.com/", "https://twitter.com/*"],
+  "content_scripts": [
+  {
+    "matches": ["https://twitter.com/*/status/*"],
     "css": ["css/rumorend.css"],
     "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
     "run_at" : "document_start"
- }],
+  },{
+    "matches": ["https://twitter.com/*"],
+    "css": ["css/rumorend.css"],
+    "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
+    "run_at" : "document_start"
+  }
+  ],
 
   "background": {
     "scripts": ["js/rumorend-bg.js"],
