@@ -44,7 +44,7 @@ function updateFactCheckIcon(tweetDiv, confidence) {
 
     $(tweetDiv).find(".fact-check").hover(
       function() {
-        insertFactCheckDetails(tweetDiv, 85);
+        insertFactCheckDetails(tweetDiv, confidence);
       }, function() {
         $(tweetDiv).find(".fact-check-detail").hide('normal');
         $(tweetDiv).find(".fact-check-detail").remove();
