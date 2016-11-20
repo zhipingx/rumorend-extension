@@ -11,12 +11,12 @@
   {
     "matches": ["https://twitter.com/*/status/*"],
     "css": ["css/rumorend.css"],
-    "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
+    "js": ["js/jquery-3.1.1.min.js", "js/rumorend.js"],
     "run_at" : "document_start"
   },{
     "matches": ["https://twitter.com/*"],
     "css": ["css/rumorend.css"],
-    "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
+    "js": ["js/jquery-3.1.1.min.js", "js/rumorend.js"],
     "run_at" : "document_start"
   }],
   "icons": {
@@ -25,11 +25,18 @@
     "128": "images/icons_128.png"
   },
   "background": {
-    "scripts": ["js/rumorend-bg.js"],
+    "scripts": ["js/jquery.min.js",
+                "js/bootstrap/modernizr.js",
+                "js/bootstrap/bootstrap-slider.min.js",
+                "js/bootstrap/bootstrap2-toggle.min.js",
+                "js/rumorend-bg.js"],
+    "css": ["css/bootstrap-slider.min.css",
+            "css/bootstrap2-toggle.min.css"],
     "persistent": false
   },
   "page_action": {
     "default_icon": "images/icon16.png",
+    "default_popup": "popup.html",
     "default_title": "Extension will be enabled when you open twitter.com"
   },
   "permissions": [

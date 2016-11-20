@@ -23,7 +23,6 @@ function setUpShield() {
       tweetURL = TwitterURLPrefix + tweetDivId;
       // console.log(tweetURL);
       postAJAX(tweetURL, tweetDiv);
-
     }
   }, false);
 }
@@ -32,29 +31,30 @@ function insertFactCheckIcon(tweetDiv) {
   if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) return;
   $(tweetDiv).find('.stream-item-header').append('<div class="fact-check twitter-bird"></div>');
   imgSrc = chrome.runtime.getURL('images/tw-small.png');
-  $(tweetDiv).find(".fact-check").css('background-image', 'url(' + imgSrc + ')')
+  $(tweetDiv).find('.stream-item-header').find(".fact-check").css('background-image', 'url(' + imgSrc + ')')
 }
 
 function updateFactCheckIcon(tweetDiv, confidence) {
   if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) {
     $(tweetDiv).find('.twitter-bird').remove();
-
     // $(tweetDiv).find('.stream-item-header').append('<div class="fact-check"></div>');
     $(tweetDiv).find('.stream-item-header').append('<div class="fact-check Icon Icon--bird" style="width: 24px; height: 24px; color: ' + ColorGradian[(confidence / 10) | 0] + '"><span class="visuallyhidden">Twitter</span></div>')
 
-    $(tweetDiv).find(".fact-check").hover(
+    $(tweetDiv).find('.stream-item-header').find(".fact-check").first().hover(
       function() {
-        insertFactCheckDetails(tweetDiv, 85);
+        insertFactCheckDetails(tweetDiv, confidence);
       }, function() {
-        $(tweetDiv).find(".fact-check-detail").hide('normal');
-        $(tweetDiv).find(".fact-check-detail").remove();
+        $(tweetDiv).find('.stream-item-header').find(".fact-check-detail").hide('normal');
+        $(tweetDiv).find('.stream-item-header').find(".fact-check-detail").remove();
     });
   }
 }
 
 function insertFactCheckDetails(tweetDiv, score) {
-  $('<div class="fact-check-detail">Score: ' + score + '</div>').hide().appendTo($(tweetDiv).find(".fact-check")).show();
+  $('<div class="fact-check-detail">Score: ' + score + '</div>').hide().appendTo($(tweetDiv).find('.stream-item-header').find(".fact-check").first()).show();
 }
+
+
 
 function postAJAX(tweetURL, tweetDiv) {
   var json_query = { 'url': tweetURL };
@@ -68,13 +68,14 @@ function postAJAX(tweetURL, tweetDiv) {
       if (this.status === 200) {
         // var response = JSON.parse(this.responseText);
         // console.log(tweetURL + ' ' + this.responseText);
-        this.responseJSON = JSON.parse(this.responseText);
+        // this.responseJSON = JSON.parse(this.responseText);
 
-        if (this.responseJSON[1] == null) {
-          updateFactCheckIcon(this.tweetDiv, this.responseJSON[0]);
-        } else {
-          updateFactCheckIcon(this.tweetDiv, Math.min.apply(Math, this.responseJSON));
-        }
+        updateFactCheckIcon(this.tweetDiv, this.responseText);
+        // if (this.responseJSON[1] == null) {
+        //   updateFactCheckIcon(this.tweetDiv, this.responseJSON[0]);
+        // } else {
+        //   updateFactCheckIcon(this.tweetDiv, Math.min.apply(Math, this.responseJSON));
+        // }
         console.log(this.tweetURL + ": " + this.responseText);
         // alert(response.computedString);
       } else {
