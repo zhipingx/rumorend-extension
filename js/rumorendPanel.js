@@ -1,41 +1,36 @@
 var c = chrome || browser;
 var regex = /https:\/\/twitter\.com\/(.*)/;
-
-chrome.storage.local.get({'shieldsUp': true}, function(items) {
-  // alert(items.shieldsUp)
-  if(items.shieldsUp) {
-    // $('#remorendSwitch').prop( "checked", true );
-  } else {
-    $('#remorendSwitch').removeAttr("checked");
-  }
-});
-
-$(function() {
+// alert($(this).val());
+// alert('aa');
+window.onload = function() {
 
   $('#remorendSwitch').change(function() {
-    // alert($(this).prop('checked'))
-    if ($(this).prop('checked') == false) {
-      rumorendShieldsDown();
-      c.tabs.reload();
+
+    c.storage.local.get({'shieldsUp': true}, function(items) {
+      if (items.shieldsUp) {
+
+        c.storage.local.set({'shieldsUp': false}, function() {});
+        c.tabs.reload();
+      } else {
+        c.storage.local.set({'shieldsUp': true}, function() {});
+        c.tabs.reload();
+      // c.tabs.reload();
+      }
+    });
+  });
+
+
+  chrome.storage.local.get('shieldsUp', function(items) {
+
+    // alert(items.shieldsUp)
+    if(items.shieldsUp) {
+      $('#toggle-demo').bootstrapToggle('on')
+      // $('#remorendSwitch').attr("checked", true);
+      // $('#remorendSwitch').prop( "checked", true );
     } else {
-      rumorendShieldsUp();
+      $('#toggle-demo').bootstrapToggle('off')
+      // $('#remorendSwitch').attr("checked", false);
     }
-  })
-})
-
-function rumorendShieldsDown() {
-  c.storage.local.set({'shieldsUp': false}, function() {
-    console.log('shieldsDown');
-    c.pageAction.setIcon({path: 'images/icon32.png'});
-    // c.pageAction.setTitle({tabId: tab.id, title: 'rumorend disabled. Click to enable.'});
   });
-}
-
-function rumorendShieldsUp() {
-  c.storage.local.set({'shieldsUp': true}, function() {
-    console.log('shieldsUp');
-    c.pageAction.setIcon({path: 'images/icon32-blue.png'});
-    // c.pageAction.setTitle({tabId: tab.id, title: 'rumorend enabled. Click to disable.'});
-    // updateTwitt();
-  });
+  // console.log("onload" + Date())
 }

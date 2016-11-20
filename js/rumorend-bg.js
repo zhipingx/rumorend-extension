@@ -15,21 +15,25 @@ var regex = /https:\/\/twitter\.com\/(.*)/;
 // });
 //
 function rumorendShieldsDown(tab) {
-  c.storage.local.set({'shieldsUp': false}, function() {
-    console.log('shieldsDown ' + tab.url);
-    c.pageAction.setIcon({tabId: tab.id, path: 'images/icon32.png'});
-    c.pageAction.setTitle({tabId: tab.id, title: 'rumorend disabled. Click to enable.'});
-  });
+  c.pageAction.setIcon({tabId: tab.id, path: 'images/icon32.png'});
+  c.pageAction.setTitle({tabId: tab.id, title: 'rumorend disabled. Click to enable.'});
+  // c.storage.local.set({'shieldsUp': false}, function() {
+  //   console.log('shieldsDown ' + tab.url);
+  //   c.pageAction.setIcon({tabId: tab.id, path: 'images/icon32.png'});
+  //   c.pageAction.setTitle({tabId: tab.id, title: 'rumorend disabled. Click to enable.'});
+  // });
 }
 
 function rumorendShieldsUp(tab) {
-  c.storage.local.set({'shieldsUp': true}, function() {
-    console.log('shieldsUp ' + tab.url);
-
-    c.pageAction.setIcon({tabId: tab.id, path: 'images/icon32-blue.png'});
-    c.pageAction.setTitle({tabId: tab.id, title: 'rumorend enabled. Click to disable.'});
-    // updateTwitt();
-  });
+  c.pageAction.setIcon({tabId: tab.id, path: 'images/icon32-blue.png'});
+  c.pageAction.setTitle({tabId: tab.id, title: 'rumorend enabled. Click to disable.'});
+  // c.storage.local.set({'shieldsUp': true}, function() {
+  //   console.log('shieldsUp ' + tab.url);
+  //
+  //   c.pageAction.setIcon({tabId: tab.id, path: 'images/icon32-blue.png'});
+  //   c.pageAction.setTitle({tabId: tab.id, title: 'rumorend enabled. Click to disable.'});
+  //   // updateTwitt();
+  // });
 }
 
 c.runtime.onInstalled.addListener(function() {
