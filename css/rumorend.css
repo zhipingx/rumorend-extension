@@ -13,10 +13,38 @@ div.tweet.js-stream-tweet.js-actionable-tweet.js-profile-popup-actionable.origin
 }
 
 .fact-check {
+    position: relative;
     float: right;
-    display: inline-block;
     height: 15px;
     width: 15px;
+}
+
+.fact-check .fact-check-detail {
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    width: 120px;
+    top: 200%;
+    left: 50%;
+    margin-left: -60px;
+
+    position: absolute;
+    z-index: 1;
+}
+
+.fact-check .fact-check-detail::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
 }
 
 .twitter-bird {

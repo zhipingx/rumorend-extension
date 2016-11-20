@@ -7,7 +7,6 @@ var RumorendServerURL = 'https://ec2-54-147-50-239.compute-1.amazonaws.com:5000/
 //                         chrome.runtime.getURL('images/16_excellent.png')];
 var ColorGradian = ["#FF0000", "#FF2A00", "#FF5400", "#FF7F00", "#F1A900", "#E3D400", "#D5FF00", "#8EFF00", "#47FF00", "#00FF00"];
 
-
 chrome.storage.local.get({'shieldsUp': true}, function(items) {
   if(items.shieldsUp) {
     setUpShield();
@@ -59,9 +58,17 @@ function updateFactCheckIcon(tweetDiv, confidence) {
     // $(tweetDiv).find('.stream-item-header').append('<div class="fact-check"></div>');
     $(tweetDiv).find('.stream-item-header').append('<div class="fact-check Icon Icon--bird" style="width: 24px; height: 24px; color: ' + ColorGradian[(confidence / 10) | 0] + '"><span class="visuallyhidden">Twitter</span></div>')
 
-
-    // $(tweetDiv).find(".fact-check").css('background-image', 'url(' + ConfidenceResultsList[(confidence / 20) | 0] + ')');
+    $(tweetDiv).find(".fact-check").hover(
+      function() {
+        insertFactCheckDetails(tweetDiv);
+      }, function() {
+        $(tweetDiv).find(".fact-check-detail").remove();
+    });
   }
+}
+
+function insertFactCheckDetails(tweetDiv) {
+  $(tweetDiv).find(".fact-check").append('<span class="fact-check-detail">Report</span>');
 }
 
 function postAJAX(tweetURL, tweetDiv) {
