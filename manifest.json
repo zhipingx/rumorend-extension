@@ -18,15 +18,18 @@
     "css": ["css/rumorend.css"],
     "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
     "run_at" : "document_start"
-  }
-  ],
-
+  }],
+  "icons": {
+    "16": "images/icons_16.png",
+    "32": "images/icons_32.png",
+    "128": "images/icons_128.png"
+  },
   "background": {
     "scripts": ["js/rumorend-bg.js"],
     "persistent": false
   },
   "page_action": {
-    "default_icon": "images/icon.png",
+    "default_icon": "images/icon16.png",
     "default_title": "Extension will be enabled when you open twitter.com"
   },
   "permissions": [
