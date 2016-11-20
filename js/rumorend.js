@@ -19,22 +19,6 @@ function setUpShield() {
       tweetDiv = event.target;
       insertFactCheckIcon(tweetDiv);
 
-      tweetId = tweetDiv.getAttribute('data-item-id');
-      tweetLiId = 'stream-item-tweet-' + tweetId;
-      tweetLi = document.getElementById(tweetLiId);
-
-      // ("div").find("[data-item-id='" + tweetId + "']")
-
-      // $(tweetDiv).addClass('scanning');
-
-      // setTimeout(function () {
-      //   $(arguments[0]).removeClass('scanning');
-      //   console.log(arguments[1] + 'removed')
-      // }, 5 * 1000, tweetDiv, tweetId);
-
-      // tweetDiv.
-      // tweetDiv.className += " scanning";
-
       tweetDivId = tweetDiv.getAttribute('data-permalink-path');
       tweetURL = TwitterURLPrefix + tweetDivId;
       // console.log(tweetURL);
