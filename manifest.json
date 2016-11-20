@@ -10,12 +10,12 @@
   "content_scripts": [
   {
     "matches": ["https://twitter.com/*/status/*"],
-    "css": ["css/rumorend.css"],
+    "css": ["css/rumorend.css", "css/font-awesome.min.css"],
     "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
     "run_at" : "document_start"
   },{
     "matches": ["https://twitter.com/*"],
-    "css": ["css/rumorend.css"],
+    "css": ["css/rumorend.css", "css/font-awesome.min.css"],
     "js": ["js/jquery-3.1.1.slim.min.js", "js/rumorend.js"],
     "run_at" : "document_start"
   }
