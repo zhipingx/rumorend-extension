@@ -57,15 +57,16 @@ function updateFactCheckIcon(tweetDiv, confidence) {
     $(tweetDiv).find(".fact-check").css('background-image', 'url(' + ConfidenceResultsList[(confidence / 20) | 0] + ')');
     $(tweetDiv).find(".fact-check").hover(
       function() {
-        insertFactCheckDetails(tweetDiv);
+        insertFactCheckDetails(tweetDiv, 85);
       }, function() {
+        $(tweetDiv).find(".fact-check-detail").hide('normal');
         $(tweetDiv).find(".fact-check-detail").remove();
     });
   }
 }
 
-function insertFactCheckDetails(tweetDiv) {
-  $(tweetDiv).find(".fact-check").append('<span class="fact-check-detail">Report</span>');
+function insertFactCheckDetails(tweetDiv, score) {
+  $('<div class="fact-check-detail">Score: ' + score + '</div>').hide().appendTo($(tweetDiv).find(".fact-check")).show();
 }
 
 function postAJAX(tweetURL, tweetDiv) {
