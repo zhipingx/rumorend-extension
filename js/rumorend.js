@@ -6,7 +6,6 @@ var ConfidenceResultsList = [chrome.runtime.getURL('images/16_verypoor.png'),
                         chrome.runtime.getURL('images/16_good.png'),
                         chrome.runtime.getURL('images/16_excellent.png')];
 
-
 chrome.storage.local.get({'shieldsUp': true}, function(items) {
   if(items.shieldsUp) {
     setUpShield();
@@ -44,7 +43,6 @@ function setUpShield() {
   }, false);
 }
 
-
 function insertFactCheckIcon(tweetDiv) {
   if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) return;
   $(tweetDiv).find('.stream-item-header').append('<div class="fact-check twitter-bird"></div>');
@@ -56,9 +54,18 @@ function updateFactCheckIcon(tweetDiv, confidence) {
   if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) {
     $(tweetDiv).find('.twitter-bird').remove();
     $(tweetDiv).find('.stream-item-header').append('<div class="fact-check"></div>');
-    console.log(confidence);
     $(tweetDiv).find(".fact-check").css('background-image', 'url(' + ConfidenceResultsList[(confidence / 20) | 0] + ')');
+    $(tweetDiv).find(".fact-check").hover(
+      function() {
+        insertFactCheckDetails(tweetDiv);
+      }, function() {
+        $(tweetDiv).find(".fact-check-detail").remove();
+    });
   }
+}
+
+function insertFactCheckDetails(tweetDiv) {
+  $(tweetDiv).find(".fact-check").append('<span class="fact-check-detail">Report</span>');
 }
 
 function postAJAX(tweetURL, tweetDiv) {
