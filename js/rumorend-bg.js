@@ -2,19 +2,18 @@ var c = chrome || browser;
 var regex = /https:\/\/twitter\.com\/(.*)/;
 
 
-
-c.pageAction.onClicked.addListener(function(tab) {
-  c.storage.local.get({'shieldsUp': true}, function(items) {
-    if (items.shieldsUp) {
-      rumorendShieldsDown(tab);
-      c.tabs.reload(tab.id);
-    }
-    else {
-      rumorendShieldsUp(tab);
-    }
-  });
-});
-
+// c.pageAction.onClicked.addListener(function(tab) {
+//   c.storage.local.get({'shieldsUp': true}, function(items) {
+//     if (items.shieldsUp) {
+//       rumorendShieldsDown(tab);
+//       c.tabs.reload(tab.id);
+//     }
+//     else {
+//       rumorendShieldsUp(tab);
+//     }
+//   });
+// });
+//
 function rumorendShieldsDown(tab) {
   c.storage.local.set({'shieldsUp': false}, function() {
     console.log('shieldsDown ' + tab.url);
