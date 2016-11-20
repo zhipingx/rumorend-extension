@@ -6,6 +6,7 @@ var RumorendServerURL = 'https://ec2-54-147-50-239.compute-1.amazonaws.com:5000/
 //                         chrome.runtime.getURL('images/16_good.png'),
 //                         chrome.runtime.getURL('images/16_excellent.png')];
 var ColorGradian = ["#FF0000", "#FF2A00", "#FF5400", "#FF7F00", "#F1A900", "#E3D400", "#D5FF00", "#8EFF00", "#47FF00", "#00FF00"];
+var ConfidenceThreshold = 70;
 
 chrome.storage.local.get({'shieldsUp': true}, function(items) {
   if(items.shieldsUp) {
@@ -23,7 +24,6 @@ function setUpShield() {
       tweetURL = TwitterURLPrefix + tweetDivId;
       // console.log(tweetURL);
       postAJAX(tweetURL, tweetDiv);
-
     }
   }, false);
 }
@@ -36,24 +36,31 @@ function insertFactCheckIcon(tweetDiv) {
 }
 
 function updateFactCheckIcon(tweetDiv, confidence) {
-  if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) {
-    $(tweetDiv).find('.twitter-bird').remove();
+  chrome.storage.local.get('threshold', function(items) {
+    if(confidence >= items.threshold) {
+      $(tweetDiv).remove();
+    } else {
+      if ($(tweetDiv).find('.stream-item-header div:last-child').hasClass('fact-check')) {
+        $(tweetDiv).find('.twitter-bird').remove();
 
-    // $(tweetDiv).find('.stream-item-header').append('<div class="fact-check"></div>');
-    $(tweetDiv).find('.stream-item-header').append('<div class="fact-check Icon Icon--bird" style="width: 24px; height: 24px; color: ' + ColorGradian[(confidence / 10) | 0] + '"><span class="visuallyhidden">Twitter</span></div>')
+        // $(tweetDiv).find('.stream-item-header').append('<div class="fact-check"></div>');
+        $(tweetDiv).find('.stream-item-header').append('<div class="fact-check Icon Icon--bird" style="width: 24px; height: 24px; color: ' + ColorGradian[(confidence / 10) | 0] + '"><span class="visuallyhidden">Twitter</span></div>')
 
-    $(tweetDiv).find(".fact-check").hover(
-      function() {
-        insertFactCheckDetails(tweetDiv, confidence);
-      }, function() {
-        $(tweetDiv).find(".fact-check-detail").hide('normal');
-        $(tweetDiv).find(".fact-check-detail").remove();
-    });
-  }
+        $(tweetDiv).find(".fact-check").hover(
+          function() {
+            console.log(confidence);
+            insertFactCheckDetails(tweetDiv, confidence);
+          }, function() {
+            $(tweetDiv).find(".fact-check-detail").hide('normal');
+            $(tweetDiv).find(".fact-check-detail").remove();
+        });
+      }
+    }
+  });
 }
 
 function insertFactCheckDetails(tweetDiv, score) {
-  $('<div class="fact-check-detail">Score: ' + score + '</div>').hide().appendTo($(tweetDiv).find(".fact-check")).show();
+  $('<div class="fact-check-detail">Credit: ' + score + '</div>').hide().appendTo($(tweetDiv).find(".fact-check")).show();
 }
 
 function postAJAX(tweetURL, tweetDiv) {
